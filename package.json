@@ -1,0 +1,15 @@
+{
+  "name": "ssegwsw",
+  "version": "1.0.0",
+  "description": "Server-Sent Events Gateway by Service Workers",
+  "repository": "https://github.com/shoom3301/ssegwsw.git",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": {
+    "name": "Alexandr Kazachenko",
+    "email": "shoom3301@gmail.com"
+  },
+  "license": "ISC"
+}
