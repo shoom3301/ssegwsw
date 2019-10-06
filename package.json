@@ -11,5 +11,8 @@
     "name": "Alexandr Kazachenko",
     "email": "shoom3301@gmail.com"
   },
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "express": "^4.17.1"
+  }
 }
