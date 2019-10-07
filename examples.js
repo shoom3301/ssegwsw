@@ -89,27 +89,27 @@ self.addEventListener('fetch', event => {
     const {headers, url} = event.request;
     const isSSERequest = headers.get('Accept') === 'text/event-stream';
 
-    // Обрабатываем только SSE соединения
+    // Process only SSE connections
     if (!isSSERequest) {
         return;
     }
 
-    // Заголовки ответа для SSE
+    // Headers for SSE response
     const sseHeaders = {
         'content-type': 'text/event-stream',
         'Transfer-Encoding': 'chunked',
         'Connection': 'keep-alive',
     };
-    // Функция форматирующая данные для SSE
+    // Function for formatting message to SSE response
     const sseChunkData = (data, event, retry, id) =>
         Object.entries({event, id, data, retry})
             .filter(([, value]) => ![undefined, null].includes(value))
             .map(([key, value]) => `${key}: ${value}`)
             .join('\n') + '\n\n';
 
-    // Таблица с серверными соединениями, где ключ - url, значение - EventSource
+    // Map with server connections, where key - url, value - EventSource
     const serverConnections = {};
-    // Для каждого url открываем только одно соединение с сервером и и используем его для последующих запросов
+    // For each request opens only one server connection and use it for next requests with the same url
     const getServerConnection = url => {
         if (!serverConnections[url]) {
             serverConnections[url] = new EventSource(url);
@@ -117,7 +117,7 @@ self.addEventListener('fetch', event => {
 
         return serverConnections[url];
     };
-    // При получении сообщения с сервера пересылаем его в браузер
+    // On message from server forward it to browser
     const onServerMessage = (controller, {data, type, retry, lastEventId}) => {
         const responseText = sseChunkData(data, type, retry, lastEventId);
         const responseData = Uint8Array.from(responseText, x => x.charCodeAt(0));
